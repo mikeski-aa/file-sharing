@@ -25,22 +25,4 @@ model User {
   username  String   @db.Text
   hash      String   @db.Text  
   email     String   @unique 
-  files     File[]
-  folder    Folder[]
-}
-
-model File {
-  id     Int    @id @default(autoincrement())
-  filename  String
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId Int
-}
-
-model Folder {
-  id     Int    @id @default(autoincrement())
-  foldername  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    
-  file File @relation(fields: [fileId], references: [id])
-  fileId Int
 }
