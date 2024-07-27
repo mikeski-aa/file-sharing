@@ -32,15 +32,15 @@ model User {
 model File {
   id     Int    @id @default(autoincrement())
   filename  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId Int
 }
 
 model Folder {
   id     Int    @id @default(autoincrement())
   foldername  String
-  file   File   @relation(fields: [fileId], references: [id])
-  fileId Int    @unique
   user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
+  userId Int    
+  file File @relation(fields: [fileId], references: [id])
+  fileId Int
 }
