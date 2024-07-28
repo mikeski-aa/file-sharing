@@ -26,3 +26,15 @@ model User {
   hash      String   @db.Text  
   email     String   @unique 
 }
+
+model File {
+  id  Int @id @default(autoincrement())
+  name String @db.Text
+  url String @db.Text
+}
+
+model Folder {
+  id Int @id @default(autoincrement())
+  name String @db.Text
+  file File[]
+}
