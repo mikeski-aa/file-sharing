@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+    div.mainCont 
+        h2 Login 
+        form(method="POST")
+            div.loginUsername
+                label(for="email") Email:
+                input(type="email" name="email" placeholder="example@provider.com" required value=(email === undefined?'':email))
+            div.loginPassword
+                label(for="password") Password:
+                input(type="password" name="password" required value=(password === undefined?'':password))
+            button.btnLoginSubmit(action="submit") Log in!
+        
+        if errors 
+            ul 
+                each error in errors 
+                    li!=error.msg

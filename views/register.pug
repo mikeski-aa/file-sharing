@@ -1,0 +1,23 @@
+extends layout 
+
+block content 
+    div.mainCont 
+        h2 Register
+        form(method="POST")
+            div.signupUname 
+                label(for="username") Enter username:
+                input(type="text" name="username" placeholder="Username" required value=(username===undefined?"":username))
+            div.signupEmail 
+                label(for="email") Email:
+                input(type="email" name="email" placeholder="myemail@myprovider.com" required value=(email===undefined?"":email))
+            div.signupPassword 
+                label(for="password") Enter password:
+                input(type="password" name="password" required value=(password===undefined?"":password))
+            div.signupConfirmPassword
+                label(for="confirmPassword") Confirm password:
+                input(type="password" name="confirmPassword" required value=(confirmPassword===undefined?"":confirmPassword))
+            button.btnSignupSubmit(action="submit") Register 
+        if errors 
+            ul 
+                each error in errors 
+                    li!=error.msg

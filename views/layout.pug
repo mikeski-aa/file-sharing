@@ -14,13 +14,19 @@ html
       }
 
       function goRegister() {
-        window.location.href = "/signup"
+        window.location.href = "/register"
       }
 
     div.headerContent
       h1 File Server 
       div.navBar 
-        button.navBtn(onclick="goHome()") Home
-        button.navBtn(onclick="goLogin()") Login
-        button.navBtn(onclick="goRegister()") Register
+        if user
+          button.navBtn(onclick="goHome()") Home
+          p Welcome #{user.username}
+          button.navBtn(onclick="goRegister()") Logout
+        else 
+          button.navBtn(onclick="goHome()") Home
+          button.navBtn(onclick="goLogin()") Login
+          button.navBtn(onclick="goRegister()") Register
+
     block content
