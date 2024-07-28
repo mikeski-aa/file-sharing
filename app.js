@@ -8,6 +8,7 @@ const passport = require("passport");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 require("dotenv").config();
+const prisma = new PrismaClient();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -24,16 +25,27 @@ const prismaStore = new PrismaSessionStore(new PrismaClient(), {
   dbRecordIdIsSessionId: true,
   dbRecordIdFunction: undefined,
 });
+
 // set up session cookies
-app.use(
-  session({
-    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
-    secret: process.env.SECRET,
-    resave: true,
-    saveUninitialized: true,
-    store: prismaStore,
-  })
-);
+// app.use(
+//   session({
+//     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
+//     secret: process.env.SECRET,
+//     resave: true,
+//     saveUninitialized: true,
+//     store: prismaStore,
+//   })
+// );
+
+// set up passport use
+// app.use(passport.session());
+
+async function testDB() {
+  const test = await prisma.User.findMany();
+  console.log(test);
+}
+
+testDB();
 
 app.use(logger("dev"));
 app.use(express.json());
