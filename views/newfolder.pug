@@ -2,11 +2,11 @@ extends layout
 
 block content 
     div.mainCont 
-        h1 Create a new folder 
+        h2 Create a new folder 
         form(method='POST')
             div.newFolderName 
                 label(for="name") Folder name
-                input(type="text" name="name" placeholder="New Folder" required)
+                input(type="text" name="name" placeholder="New Folder" required value=(name == undefined?'':name))
             button.btnNewFolderAdd(action='post') Create folder 
         
         if errors 

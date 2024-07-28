@@ -7,8 +7,24 @@ const validatePassword = require("../lib/passwordUtils").validatePassword;
 
 // GET homepage
 exports.getIndex = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const [filenumber, foldernumber] = await Promise.all([
+    prisma.File.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    }),
+    prisma.folder.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    }),
+  ]);
+
   res.render("index", {
     user: req.user,
+    filenumber: filenumber.length,
+    foldernumber: foldernumber.length,
   });
 });
 
@@ -160,11 +176,6 @@ exports.getLogout = asyncHandler(async (req, res, next) => {
     }
   });
   res.redirect("/");
-});
-
-// GET new folder
-exports.getNewFolder = asyncHandler(async (req, res, next) => {
-  res.render("newfolder", { user: req.user });
 });
 
 // GET new file
