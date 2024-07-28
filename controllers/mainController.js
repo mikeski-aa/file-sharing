@@ -161,3 +161,13 @@ exports.getLogout = asyncHandler(async (req, res, next) => {
   });
   res.redirect("/");
 });
+
+// GET new folder
+exports.getNewFolder = asyncHandler(async (req, res, next) => {
+  res.render("newfolder", { user: req.user });
+});
+
+// GET new file
+exports.getNewFile = asyncHandler(async (req, res, next) => {
+  res.render("newfile", { user: req.user });
+});

@@ -25,16 +25,24 @@ model User {
   username  String   @db.Text
   hash      String   @db.Text  
   email     String   @unique 
+  files  File[]
+  folders Folder[]
 }
 
 model File {
   id  Int @id @default(autoincrement())
   name String @db.Text
   url String @db.Text
+  user  User  @relation(fields: [userId], references: [id])
+  userId Int 
+  folder Folder @relation(fields: [folderId], references: [id])
+  folderId Int
 }
 
 model Folder {
   id Int @id @default(autoincrement())
   name String @db.Text
-  file File[]
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  files File[]
 }

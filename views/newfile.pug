@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+    div.mainCont 
+        h1 Upload a new file
+        form(method='POST' enctype="multipart/form-data")
+            div.newFileName 
+                label(for="name") File name
+                input(type="text" name="name" placeholder="New Folder" required)
+            div.newFileItem
+                label(for="file") File name
+                input(type="file" name="file" required)
+            button.btnNewFolderAdd(action='post') Create folder 
+        
+        if errors 
+            ul  
+                each error in errors 
+                    li!=error.msg

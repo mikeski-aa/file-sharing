@@ -20,4 +20,10 @@ router.post("/login", mainController.postLogin);
 // GET logout page
 router.get("/logout", mainController.getLogout);
 
+// GET new folder page
+router.get("/newfolder", mainController.getNewFolder);
+
+// GET new file page
+router.get("/newfile", mainController.getNewFile);
+
 module.exports = router;

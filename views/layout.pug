@@ -25,11 +25,21 @@ html
         window.location.href = "/logout"
       }
 
+      function goFolders() {
+        window.location.href = "/newfolder"
+      }
+
+      function goNewFile() {
+        window.location.href = "/newfile"
+      }
+
     div.headerContent
       h1 File Server 
       div.navBar 
         if user
           button.navBtn(onclick="goHome()") Home
+          button.navBtn(onclick="goFolders()") New Folder
+          button.navBtn(onclick="goNewFile()") Files
           button.navBtn(onclick="goLogout()") Logout
         else 
           button.navBtn(onclick="goHome()") Home

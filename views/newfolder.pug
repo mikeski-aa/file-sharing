@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+    div.mainCont 
+        h1 Create a new folder 
+        form(method='POST')
+            div.newFolderName 
+                label(for="name") Folder name
+                input(type="text" name="name" placeholder="New Folder" required)
+            button.btnNewFolderAdd(action='post') Create folder 
+        
+        if errors 
+            ul  
+                each error in errors 
+                    li!=error.msg
