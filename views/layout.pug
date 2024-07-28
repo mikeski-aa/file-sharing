@@ -4,4 +4,23 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    script. 
+      function goHome() {
+        window.location.href = "/"
+      }
+
+      function goLogin() {
+        window.location.href = "/login"
+      }
+
+      function goRegister() {
+        window.location.href = "/signup"
+      }
+
+    div.headerContent
+      h1 File Server 
+      div.navBar 
+        button.navBtn(onclick="goHome()") Home
+        button.navBtn(onclick="goLogin()") Login
+        button.navBtn(onclick="goRegister()") Register
     block content

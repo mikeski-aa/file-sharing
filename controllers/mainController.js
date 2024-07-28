@@ -8,7 +8,7 @@ exports.getIndex = asyncHandler(async (req, res, next) => {
 
 // GET login
 exports.getLogin = asyncHandler(async (req, res, next) => {
-  res.render("index");
+  res.render("signup");
 });
 
 // GET signup
