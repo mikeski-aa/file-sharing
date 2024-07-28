@@ -14,7 +14,9 @@ exports.getIndex = asyncHandler(async (req, res, next) => {
 
 // GET signup
 exports.getRegister = asyncHandler(async (req, res, next) => {
-  res.render("register");
+  res.render("register", {
+    user: req.user,
+  });
 });
 
 // POST signup
@@ -94,7 +96,9 @@ exports.postRegister = [
 
 // GET login
 exports.getLogin = asyncHandler(async (req, res, next) => {
-  res.render("login");
+  res.render("login", {
+    user: req.user,
+  });
 });
 
 // POST login
@@ -122,29 +126,38 @@ exports.postLogin = [
       });
       console.log(user);
 
-      //   if (user == null) {
-      //     return res.render("login", {
-      //       email: req.body.email,
-      //       password: req.body.password,
-      //       errors: [{ msg: "Email or password entered is incorrect" }],
-      //     });
-      //   }
-      //   const validateLogin = validatePassword(req.body.password, user.hash);
-      //   console.log(validateLogin);
-      //   if (validateLogin === false) {
-      //     return res.render("login", {
-      //       email: req.body.email,
-      //       password: req.body.password,
-      //       errors: [{ msg: "Email or password entered is incorrect" }],
-      //     });
-      //   }
+      if (user == null) {
+        return res.render("login", {
+          email: req.body.email,
+          password: req.body.password,
+          errors: [{ msg: "Email or password entered is incorrect" }],
+        });
+      }
+      const validateLogin = validatePassword(req.body.password, user.hash);
+      console.log(validateLogin);
+      if (validateLogin === false) {
+        return res.render("login", {
+          email: req.body.email,
+          password: req.body.password,
+          errors: [{ msg: "Email or password entered is incorrect" }],
+        });
+      }
 
       passport.authenticate("local", {
-        successRedirect: "/register",
-        failureRedirect: "/",
+        successRedirect: "/",
       })(req, res);
     } catch (error) {
       next(error);
     }
   }),
 ];
+
+// GET logout
+exports.getLogout = asyncHandler(async (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+  });
+  res.redirect("/");
+});

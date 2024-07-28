@@ -17,4 +17,7 @@ router.get("/login", mainController.getLogin);
 // POST login page
 router.post("/login", mainController.postLogin);
 
+// GET logout page
+router.get("/logout", mainController.getLogout);
+
 module.exports = router;

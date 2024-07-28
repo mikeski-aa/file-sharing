@@ -17,13 +17,20 @@ html
         window.location.href = "/register"
       }
 
+      function goRegister() {
+        window.location.href = "/register"
+      }
+
+      function goLogout() {
+        window.location.href = "/logout"
+      }
+
     div.headerContent
       h1 File Server 
       div.navBar 
         if user
           button.navBtn(onclick="goHome()") Home
-          p Welcome #{user.username}
-          button.navBtn(onclick="goRegister()") Logout
+          button.navBtn(onclick="goLogout()") Logout
         else 
           button.navBtn(onclick="goHome()") Home
           button.navBtn(onclick="goLogin()") Login
