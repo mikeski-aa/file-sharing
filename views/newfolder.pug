@@ -7,7 +7,7 @@ block content
             div.newFolderName 
                 label(for="name") Folder name
                 input(type="text" name="name" placeholder="New Folder" required value=(name == undefined?'':name))
-            button.btnNewFolderAdd(action='post') Create folder 
+            button.btnNewFolderAdd(action='submit') Create folder 
         
         if errors 
             ul  

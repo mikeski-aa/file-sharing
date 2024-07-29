@@ -15,6 +15,8 @@ exports.postNewFolder = [
     .escape(),
 
   asyncHandler(async (req, res, next) => {
+    console.log("req.body.name:");
+    console.log(req.body.name);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       // name validation fail, re-render

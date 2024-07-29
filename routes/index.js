@@ -3,6 +3,8 @@ const router = express.Router();
 const mainController = require("../controllers/mainController");
 const folderController = require("../controllers/folderController");
 const fileController = require("../controllers/fileController");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 /* GET home page. */
 router.get("/", mainController.getIndex);
@@ -32,6 +34,7 @@ router.post("/newfolder", folderController.postNewFolder);
 router.get("/newfile", fileController.getNewFile);
 
 // POST new file page
-router.post("/newfile", fileController.postNewFile);
+// multer needs to be inserted here
+router.post("/newfile", upload.single("image"), fileController.postNewFile);
 
 module.exports = router;

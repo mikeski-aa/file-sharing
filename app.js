@@ -10,6 +10,7 @@ const { PrismaClient } = require("@prisma/client");
 require("dotenv").config();
 require("./config/passport");
 const prisma = new PrismaClient();
+const bodyParser = require("body-parser");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -48,6 +49,7 @@ app.use(passport.session());
 
 // testDB();
 
+app.use(bodyParser.json({ type: "application/*+json" }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
