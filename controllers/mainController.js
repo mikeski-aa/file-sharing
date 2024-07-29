@@ -177,8 +177,3 @@ exports.getLogout = asyncHandler(async (req, res, next) => {
   });
   res.redirect("/");
 });
-
-// GET new file
-exports.getNewFile = asyncHandler(async (req, res, next) => {
-  res.render("newfile", { user: req.user });
-});

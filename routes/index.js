@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mainController = require("../controllers/mainController");
 const folderController = require("../controllers/folderController");
+const fileController = require("../controllers/fileController");
 
 /* GET home page. */
 router.get("/", mainController.getIndex);
@@ -28,6 +29,9 @@ router.get("/newfolder", folderController.getNewFolder);
 router.post("/newfolder", folderController.postNewFolder);
 
 // GET new file page
-router.get("/newfile", mainController.getNewFile);
+router.get("/newfile", fileController.getNewFile);
+
+// POST new file page
+router.post("/newfile", fileController.postNewFile);
 
 module.exports = router;
