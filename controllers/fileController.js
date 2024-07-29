@@ -12,7 +12,6 @@ exports.getNewFile = asyncHandler(async (req, res, next) => {
   const folders = await prisma.Folder.findMany({
     where: { userId: req.user.id },
   });
-  console.log(folders);
   res.render("newfile", { user: req.user, folders: folders });
 });
 
@@ -26,6 +25,8 @@ exports.postNewFile = [
   body("folder").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
+    console.log("logging req.file");
+    console.log(req.file);
     const errors = validationResult(req);
     const prisma = new PrismaClient();
     // Cloudinary configuration
@@ -41,7 +42,7 @@ exports.postNewFile = [
       const folders = await prisma.Folder.findMany({
         where: { userId: req.user.id },
       });
-      console.log(req.body.name);
+
       return res.render("newfile", {
         user: req.user,
         name: req.body.name,
@@ -114,22 +115,26 @@ exports.getFileDetails = asyncHandler(async (req, res, next) => {
 // POST file details
 exports.postDeleteFile = asyncHandler(async (req, res, next) => {
   const prisma = new PrismaClient();
-  cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-  });
+  try {
+    cloudinary.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
+    });
 
-  // need to destroy the file on cloudinary's site + the
-  await cloudinary.uploader.destroy(+req.body.imageId, {
-    resource_type: "raw",
-  });
+    // need to destroy the file on cloudinary's site + the
+    await cloudinary.uploader.destroy(+req.body.imageId, {
+      resource_type: "raw",
+    });
 
-  await prisma.File.delete({
-    where: {
-      id: +req.params.id,
-    },
-  });
+    await prisma.File.delete({
+      where: {
+        id: +req.params.id,
+      },
+    });
 
-  res.redirect("/allfiles");
+    res.redirect("/allfiles");
+  } catch (error) {
+    next(error);
+  }
 });

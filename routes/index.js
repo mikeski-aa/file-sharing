@@ -5,7 +5,9 @@ const folderController = require("../controllers/folderController");
 const fileController = require("../controllers/fileController");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
-const isOwner = require("./authMiddleware").isOwner;
+const isFileOwner = require("./authMiddleware").isFileOwner;
+const isFolderOwner = require("./authMiddleware").isFolderOwner;
+const isAuth = require("./authMiddleware").isAuth;
 
 /* GET home page. */
 router.get("/", mainController.getIndex);
@@ -23,31 +25,39 @@ router.get("/login", mainController.getLogin);
 router.post("/login", mainController.postLogin);
 
 // GET logout page
-router.get("/logout", mainController.getLogout);
+router.get("/logout", isAuth, mainController.getLogout);
 
 // GET new folder page
-router.get("/newfolder", folderController.getNewFolder);
+router.get("/newfolder", isAuth, folderController.getNewFolder);
 
 // POST new folder
-router.post("/newfolder", folderController.postNewFolder);
+router.post("/newfolder", isAuth, folderController.postNewFolder);
 
 // GET new file page
-router.get("/newfile", fileController.getNewFile);
+router.get("/newfile", isAuth, fileController.getNewFile);
 
 // POST new file page
 // multer needs to be inserted here
-router.post("/newfile", upload.single("image"), fileController.postNewFile);
+router.post(
+  "/newfile",
+  isAuth,
+  upload.single("image"),
+  fileController.postNewFile
+);
 
 // GET list of all files
-router.get("/allfiles", fileController.getAllFiles);
+router.get("/allfiles", isAuth, fileController.getAllFiles);
 
 // GET specific file details
-router.get("/file/:id", isOwner, fileController.getFileDetails);
+router.get("/file/:id", isFileOwner, fileController.getFileDetails);
 
 // POST delete file
-router.post("/file/:id", fileController.postDeleteFile);
+router.post("/file/:id", isFileOwner, fileController.postDeleteFile);
 
 // GET specific folder
-router.get("/folder/:id", folderController.getFolderDetails);
+router.get("/folder/:id", isFolderOwner, folderController.getFolderDetails);
+
+// POST delete specific folder
+router.post("/folder/:id", isFolderOwner, folderController.postFolderDelete);
 
 module.exports = router;

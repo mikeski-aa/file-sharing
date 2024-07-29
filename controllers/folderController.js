@@ -65,3 +65,35 @@ exports.getFolderDetails = asyncHandler(async (req, res, next) => {
 
   res.render("folderdetails", { user: req.user, folder: folder, items: items });
 });
+
+//POST FOLDER DELETE
+exports.postFolderDelete = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const items = await prisma.File.findMany({
+    where: {
+      folderId: +req.params.id,
+    },
+  });
+
+  const folder = await prisma.Folder.findUnique({
+    where: {
+      id: +req.params.id,
+    },
+  });
+
+  if (items.length > 0) {
+    return res.render("folderdetails", {
+      user: req.user,
+      items: items,
+      error: "Items need to be deleted form folder first!",
+      folder: folder,
+    });
+  }
+
+  await prisma.Folder.delete({
+    where: {
+      id: +req.params.id,
+    },
+  });
+  res.redirect("/");
+});

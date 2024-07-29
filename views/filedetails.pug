@@ -5,9 +5,14 @@ block content
         h4 #{file.name}
         h5 #{file.imageId}
         img(src=file.url)
+        
         form(method="POST")
             input(type="hidden" name="imageid" value=file.imageId)
-            button.itemDelete(onclick="submit") Delete
+            button.itemDelete(onclick="submit") Delete file
     else 
         h2 file content missing
-    h2 File details go here blah blah
+//- form(method="POST")
+//-             input(type="hidden" name="imageid" value=file.imageId)
+//-             button.itemDelete(onclick="submit") Delete file
+        
+

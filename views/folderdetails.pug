@@ -8,7 +8,9 @@ block content
                 li 
                     a(href=`/file/${item.id}`) #{item.name}
         p If you'd like to delete the folder, please delete all items belonging to it first!
-    else 
         form(method="POST")
             input(type="hidden" name="folderid" value=folder.id)
-            button.itemDelete(onclick="submit") Delete
+            button.itemDelete(onclick="submit") Delete folder
+    if error 
+        ul 
+            li #{error}
