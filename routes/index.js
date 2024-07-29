@@ -51,8 +51,14 @@ router.get("/allfiles", isAuth, fileController.getAllFiles);
 // GET specific file details
 router.get("/file/:id", isFileOwner, fileController.getFileDetails);
 
-// POST delete file
-router.post("/file/:id", isFileOwner, fileController.postDeleteFile);
+// POST download file
+router.post("/file/:id", isFileOwner, fileController.postDownloadFile);
+
+// GET delete specific file
+router.get("/file/:id/delete", isFileOwner, fileController.getFileDelete);
+
+// POST delete specific file
+router.post("/file/:id/delete", isFileOwner, fileController.postDeleteFile);
 
 // GET specific folder
 router.get("/folder/:id", isFolderOwner, folderController.getFolderDetails);

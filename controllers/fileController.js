@@ -112,7 +112,19 @@ exports.getFileDetails = asyncHandler(async (req, res, next) => {
   res.render("filedetails", { user: req.user, file: item });
 });
 
-// POST file details
+// GET file delete
+exports.getFileDelete = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const item = await prisma.File.findUnique({
+    where: {
+      // converting to int -> int is expected by DB
+      id: +req.params.id,
+    },
+  });
+  res.render("filedelete", { user: req.user, file: item });
+});
+
+// POST file delete
 exports.postDeleteFile = asyncHandler(async (req, res, next) => {
   const prisma = new PrismaClient();
   try {
@@ -137,4 +149,25 @@ exports.postDeleteFile = asyncHandler(async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+//post file download
+exports.postDownloadFile = asyncHandler(async (req, res, next) => {
+  console.log(req.body.imageid);
+  cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+  });
+  await cloudinary.api
+    .resources_by_ids([req.body.imageid])
+    .then((result) => console.log(result));
+
+  const test = await fetch(
+    "https://res.cloudinary.com/dyev7n9en/image/upload/v1722263961/2aba8a11-e23f-4265-a45e-f46327b4ba6e.png"
+  );
+
+  console.log(test);
+
+  res.redirect("/");
 });
