@@ -5,6 +5,11 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const upload = multer({ dest: "uploads/" });
 const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const { mkdir } = require("fs/promises");
+const { Readable } = require("stream");
+const { finished } = require("stream/promises");
+const path = require("path");
 
 // GET new image
 exports.getNewFile = asyncHandler(async (req, res, next) => {
@@ -165,6 +170,18 @@ exports.postDownloadFile = asyncHandler(async (req, res, next) => {
 
   const test = await fetch(
     "https://res.cloudinary.com/dyev7n9en/image/upload/v1722263961/2aba8a11-e23f-4265-a45e-f46327b4ba6e.png"
+  );
+  const downloadFile = async (url, fileName) => {
+    const res = await fetch(url);
+    if (!fs.existsSync("downloads")) await mkdir("downloads"); //Optional if you already have downloads directory
+    const destination = path.resolve("./downloads", fileName);
+    const fileStream = fs.createWriteStream(destination, { flags: "wx" });
+    await finished(Readable.fromWeb(res.body).pipe(fileStream));
+  };
+
+  await downloadFile(
+    "https://res.cloudinary.com/dyev7n9en/image/upload/v1722263961/2aba8a11-e23f-4265-a45e-f46327b4ba6e.png",
+    "test.png"
   );
 
   console.log(test);
