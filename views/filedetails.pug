@@ -6,7 +6,7 @@ block content
         h5 #{file.imageId}
         img(src=file.url)
         form(method="POST")
-            input(type="hidden" value=file.imageId)
+            input(type="hidden" name="imageid" value=file.imageId)
             button.itemDelete(onclick="submit") Delete
     else 
         h2 file content missing

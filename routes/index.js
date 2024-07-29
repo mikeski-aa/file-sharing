@@ -44,4 +44,10 @@ router.get("/allfiles", fileController.getAllFiles);
 // GET specific file details
 router.get("/file/:id", isOwner, fileController.getFileDetails);
 
+// POST delete file
+router.post("/file/:id", fileController.postDeleteFile);
+
+// GET specific folder
+router.get("/folder/:id", folderController.getFolderDetails);
+
 module.exports = router;

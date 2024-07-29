@@ -42,3 +42,26 @@ exports.postNewFolder = [
     }
   }),
 ];
+
+// GET FOLDER DETAILS
+exports.getFolderDetails = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const folder = await prisma.Folder.findUnique({
+    where: {
+      // converted to int
+      id: +req.params.id,
+    },
+  });
+
+  const items = await prisma.File.findMany({
+    where: {
+      folderId: folder.id,
+    },
+  });
+
+  if (folder === null) {
+    return res.redirect("/");
+  }
+
+  res.render("folderdetails", { user: req.user, folder: folder, items: items });
+});

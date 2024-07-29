@@ -108,6 +108,28 @@ exports.getFileDetails = asyncHandler(async (req, res, next) => {
     },
   });
 
-  console.log(item);
   res.render("filedetails", { user: req.user, file: item });
+});
+
+// POST file details
+exports.postDeleteFile = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+  });
+
+  // need to destroy the file on cloudinary's site + the
+  await cloudinary.uploader.destroy(+req.body.imageId, {
+    resource_type: "raw",
+  });
+
+  await prisma.File.delete({
+    where: {
+      id: +req.params.id,
+    },
+  });
+
+  res.redirect("/allfiles");
 });

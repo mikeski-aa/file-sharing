@@ -7,5 +7,6 @@ block content
   if folders 
     ul
       each folder in folders 
-        li!=folder.name 
+        li 
+          a(href=`/folder/${folder.id}`) #{folder.name}
 
