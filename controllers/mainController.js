@@ -25,6 +25,7 @@ exports.getIndex = asyncHandler(async (req, res, next) => {
     user: req.user,
     filenumber: filenumber.length,
     foldernumber: foldernumber.length,
+    folders: foldernumber,
   });
 });
 

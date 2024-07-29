@@ -37,4 +37,7 @@ router.get("/newfile", fileController.getNewFile);
 // multer needs to be inserted here
 router.post("/newfile", upload.single("image"), fileController.postNewFile);
 
+// GET specific file details
+router.get("/file/::id", fileController.getFileDetails);
+
 module.exports = router;

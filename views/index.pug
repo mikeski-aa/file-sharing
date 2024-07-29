@@ -4,4 +4,8 @@ block content
   h1= title
   p Welcome to your drive! 
   p You currently have #{filenumber} of files in storage, within #{foldernumber} folder
+  if folders 
+    ul
+      each folder in folders 
+        li!=folder.name 
 

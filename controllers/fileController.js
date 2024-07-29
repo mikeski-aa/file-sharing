@@ -4,6 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const upload = multer({ dest: "uploads/" });
+const { v4: uuidv4 } = require("uuid");
 
 // GET new image
 exports.getNewFile = asyncHandler(async (req, res, next) => {
@@ -22,7 +23,10 @@ exports.postNewFile = [
     .isLength({ min: 2 })
     .escape(),
 
+  body("folder").trim().escape(),
+
   asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
     const prisma = new PrismaClient();
     // Cloudinary configuration
     cloudinary.config({
@@ -30,9 +34,7 @@ exports.postNewFile = [
       api_key: process.env.API_KEY,
       api_secret: process.env.API_SECRET,
     });
-    await console.log("req.body.name:");
-    console.log(req.body.name);
-    const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       // errors found, re render
 
@@ -50,26 +52,33 @@ exports.postNewFile = [
     }
 
     try {
+      // we need to save the file in the server
+      // we need to save the file in database with -> url to file, folder id, user id
+      // need to generate unique ID for each file
+      const fileId = uuidv4();
       const response = await cloudinary.uploader
         .upload(req.file.path, {
-          public_id: req.params.id,
+          public_id: fileId,
         })
         .catch((error) => {
           console.log(error);
         });
-      // we need to save the file in the server
-      // we need to save the file in database with -> url to file, folder id, user id
+
+      // after file uploaded, we can save to our DB
+      await prisma.File.create({
+        data: {
+          imageId: fileId,
+          name: req.body.name,
+          url: response.url,
+          userId: req.user.id,
+          folderId: +req.body.folder,
+        },
+      });
+
+      return res.redirect("/");
     } catch (error) {
       next(error);
     }
-
-    console.log("validation sucessful");
-    // upload.single(req.file);
-    console.log(req.body.name);
-    console.log(req.body.folder);
-    console.log(req.file);
-
-    res.redirect("/");
   }),
 ];
 
