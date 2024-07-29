@@ -1,0 +1,13 @@
+extends layout 
+
+block content 
+    if file 
+        h4 #{file.name}
+        h5 #{file.imageId}
+        img(src=file.url)
+        form(method="POST")
+            input(type="hidden" value=file.imageId)
+            button.itemDelete(onclick="submit") Delete
+    else 
+        h2 file content missing
+    h2 File details go here blah blah

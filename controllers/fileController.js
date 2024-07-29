@@ -64,6 +64,9 @@ exports.postNewFile = [
           console.log(error);
         });
 
+      console.log(response);
+      console.log(fileId);
+
       // after file uploaded, we can save to our DB
       await prisma.File.create({
         data: {
@@ -71,15 +74,40 @@ exports.postNewFile = [
           name: req.body.name,
           url: response.url,
           userId: req.user.id,
+          // converting to int -> int is expected by DB
           folderId: +req.body.folder,
         },
       });
 
-      return res.redirect("/");
+      return res.redirect("/allfiles");
     } catch (error) {
       next(error);
     }
   }),
 ];
 
-/// PUG CODE FOR newfile
+// GET all files
+exports.getAllFiles = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const allItems = await prisma.File.findMany({
+    where: {
+      userId: req.user.id,
+    },
+  });
+
+  res.render("allfilelist", { user: req.user, files: allItems });
+});
+
+// GET file details
+exports.getFileDetails = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const item = await prisma.File.findUnique({
+    where: {
+      // converting to int -> int is expected by DB
+      id: +req.params.id,
+    },
+  });
+
+  console.log(item);
+  res.render("filedetails", { user: req.user, file: item });
+});

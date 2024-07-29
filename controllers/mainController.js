@@ -8,25 +8,29 @@ const validatePassword = require("../lib/passwordUtils").validatePassword;
 // GET homepage
 exports.getIndex = asyncHandler(async (req, res, next) => {
   const prisma = new PrismaClient();
-  const [filenumber, foldernumber] = await Promise.all([
-    prisma.File.findMany({
-      where: {
-        userId: req.user.id,
-      },
-    }),
-    prisma.folder.findMany({
-      where: {
-        userId: req.user.id,
-      },
-    }),
-  ]);
+  if (req.user) {
+    const [filenumber, foldernumber] = await Promise.all([
+      prisma.File.findMany({
+        where: {
+          userId: req.user.id,
+        },
+      }),
+      prisma.folder.findMany({
+        where: {
+          userId: req.user.id,
+        },
+      }),
+    ]);
 
-  res.render("index", {
-    user: req.user,
-    filenumber: filenumber.length,
-    foldernumber: foldernumber.length,
-    folders: foldernumber,
-  });
+    return res.render("index", {
+      user: req.user,
+      filenumber: filenumber.length,
+      foldernumber: foldernumber.length,
+      folders: foldernumber,
+    });
+  } else {
+    res.render("index");
+  }
 });
 
 // GET signup

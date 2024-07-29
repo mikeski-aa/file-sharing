@@ -33,11 +33,18 @@ html
         window.location.href = "/newfile"
       }
 
+      function goAllFiles() {
+        window.location.href = "/allfiles"
+      }
+
+      
+
     div.headerContent
       h1 File Server 
       div.navBar 
         if user
           button.navBtn(onclick="goHome()") Home
+          button.navBtn(onclick="goAllFiles()") Show files
           button.navBtn(onclick="goFolders()") New Folder
           button.navBtn(onclick="goNewFile()") New File
           button.navBtn(onclick="goLogout()") Logout

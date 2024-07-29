@@ -5,6 +5,7 @@ const folderController = require("../controllers/folderController");
 const fileController = require("../controllers/fileController");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const isOwner = require("./authMiddleware").isOwner;
 
 /* GET home page. */
 router.get("/", mainController.getIndex);
@@ -37,7 +38,10 @@ router.get("/newfile", fileController.getNewFile);
 // multer needs to be inserted here
 router.post("/newfile", upload.single("image"), fileController.postNewFile);
 
+// GET list of all files
+router.get("/allfiles", fileController.getAllFiles);
+
 // GET specific file details
-router.get("/file/::id", fileController.getFileDetails);
+router.get("/file/:id", isOwner, fileController.getFileDetails);
 
 module.exports = router;
