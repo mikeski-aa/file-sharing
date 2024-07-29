@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const { PrismaClient } = require("@prisma/client");
 
 module.exports.isAuth = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -11,9 +12,20 @@ module.exports.isAuth = (req, res, next) => {
 
 module.exports.isOwner = asyncHandler(async (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log(req.params);
-    console.log(req.user);
+    const prisma = new PrismaClient();
+    const file = await prisma.file.findFirst({
+      where: {
+        // convert to int
+        id: +req.params.id,
+        userId: +req.user.id,
+      },
+    });
 
+    if (file === null) {
+      res
+        .status(401)
+        .json({ message: "You are not authorized to view this resource" });
+    }
     next();
   } else
     res
