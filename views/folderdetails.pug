@@ -1,6 +1,7 @@
 extends layout 
 
 block content 
+
     h4 #{folder.name}
     if items 
         ul 
@@ -8,6 +9,7 @@ block content
                 li 
                     a(href=`/file/${item.id}`) #{item.name}
         p If you'd like to delete the folder, please delete all items belonging to it first!
+        a(href=`/share/${folder.id}`) Generate share link 
         form(method="POST")
             input(type="hidden" name="folderid" value=folder.id)
             button.itemDelete(onclick="submit") Delete folder

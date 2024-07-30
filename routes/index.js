@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mainController = require("../controllers/mainController");
 const folderController = require("../controllers/folderController");
+const shareController = require("../controllers/shareController");
 const fileController = require("../controllers/fileController");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
@@ -65,5 +66,8 @@ router.get("/folder/:id", isFolderOwner, folderController.getFolderDetails);
 
 // POST delete specific folder
 router.post("/folder/:id", isFolderOwner, folderController.postFolderDelete);
+
+// GET share route
+router.get("/share/:id", shareController.getSharedRoute);
 
 module.exports = router;
