@@ -82,6 +82,7 @@ exports.getGenShareRoute = asyncHandler(async (req, res, next) => {
   res.redirect("/");
 });
 
+// dispaly share folder
 exports.getShareFolder = asyncHandler(async (req, res, next) => {
   const prisma = new PrismaClient();
   console.log(req.params.id);
@@ -112,4 +113,22 @@ exports.getShareFolder = asyncHandler(async (req, res, next) => {
     folder: existCheck,
     items: getFolderItems,
   });
+});
+
+// display share item
+exports.getShareItem = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const fileid = req.params.id.split("_")[3];
+  console.log(req.params.id);
+  const temp = req.params.id.split("_");
+  const backURL = temp[0] + "_" + temp[1] + "_" + temp[2];
+
+  const item = await prisma.Fileshare.findUnique({
+    where: {
+      // converting to int -> int is expected by DB
+      id: +fileid,
+    },
+  });
+
+  res.render("sharedfile", { user: req.user, file: item, url: backURL });
 });

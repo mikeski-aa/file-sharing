@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+    if file 
+        h4 File name: #{file.name}
+        img(src=file.url)
+        
+        form(method="POST")
+            input(type="hidden" name="imageid" value=file.imageId)
+            button.itemDelete(onclick="submit") Download file
+        a(href=`/share/${url}`) Back to shared folder
+
+    else 
+        h2 file content missing
+
