@@ -57,3 +57,29 @@ name String?
 folderId Int?
 ownerId Int? 
 }
+
+model Foldershare {
+  id Int @id 
+  name String @db.Text
+  userId Int
+  created DateTime @default(now())
+  expired DateTime?
+  uniqueurl String?
+  files Fileshare[]
+}
+
+model Fileshare {
+  id  Int @id @default(autoincrement())
+  imageId String
+  name String @db.Text
+  url String @db.Text
+  userId Int 
+  folder Foldershare @relation(fields: [folderId], references: [id])
+  folderId Int
+}
+
+// DELETE FROM "Foldershare";
+// DELETE FROM "Fileshare";
+
+// SELECT * FROM "Foldershare";
+// SELECT * FROM "Fileshare";

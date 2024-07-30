@@ -1,7 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const { PrismaClient } = require("@prisma/client");
-const deleteTest = require("../lib/helper").deleteTest;
+const getInfoFromUrl = require("../lib/helper").getInfoFromUrl;
 const { v4: uuidv4 } = require("uuid");
 
 // get share form
@@ -23,72 +23,93 @@ exports.getGenShareRoute = asyncHandler(async (req, res, next) => {
   const idGen = uuidv4();
   const newURL = idGen + "_" + req.params.id + "_" + req.user.id;
   console.log(newURL.split("_"));
-  await prisma.Test.create({
+
+  const [getFolder, getFolderItems, existCheck] = await Promise.all([
+    prisma.Folder.findUnique({
+      where: {
+        id: +req.params.id,
+      },
+    }),
+    prisma.File.findMany({
+      where: {
+        folderId: +req.params.id,
+      },
+    }),
+    prisma.Foldershare.findUnique({
+      where: {
+        id: +req.params.id,
+      },
+    }),
+  ]);
+
+  console.log(getFolderItems[0]);
+
+  if (existCheck != null) {
+    // if shared link has already been created render again with link to user
+    return res.render("shareform", {
+      user: req.user,
+      existmsg: true,
+      sharelink: existCheck.uniqueurl,
+    });
+  }
+
+  // link has not been shared, create a new folder
+
+  //   console.log(getFolderItems);
+
+  await prisma.Foldershare.create({
     data: {
+      id: +req.params.id,
+      name: getFolder.name,
+      userId: +req.user.id,
       expired: expireDate,
+      uniqueurl: newURL,
     },
   });
 
+  for (let x = 0; x < getFolderItems.length; x++) {
+    await prisma.Fileshare.create({
+      data: {
+        imageId: getFolderItems[x].imageId,
+        name: getFolderItems[x].name,
+        url: getFolderItems[x].url,
+        userId: +req.user.id,
+        folderId: +req.params.id,
+      },
+    });
+  }
+
   res.redirect("/");
-  //   const [getFolder, getFolderItems] = await Promise.all([
-  //     prisma.Folder.findUnique({
-  //       where: {
-  //         id: +req.params.id,
-  //       },
-  //     }),
-  //     prisma.File.findMany({
-  //       where: {
-  //         folderId: +req.params.id,
-  //       },
-  //     }),
-  //   ]);
-  //   const exist = await prisma.Test.findMany({
-  //     where: {
-  //       ownerId: +req.user.id,
-  //       folderId: +getFolder.id,
-  //     },
-  //   });
+});
 
-  //   console.log(exist.length);
-  //   if (exist.length > 0) {
-  //     return res.render("sharedFolder", {
-  //       user: req.user,
-  //       folder: getFolder,
-  //       items: getFolder,
-  //     });
-  //   }
+exports.getShareFolder = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  console.log(req.params.id);
+  const params = getInfoFromUrl(req.params.id);
 
-  //   try {
-  //     const [getFolder, getFolderItems] = await Promise.all([
-  //       prisma.Folder.findUnique({
-  //         where: {
-  //           id: +req.params.id,
-  //         },
-  //       }),
-  //       prisma.File.findMany({
-  //         where: {
-  //           folderId: +req.params.id,
-  //         },
-  //       }),
-  //     ]);
+  const [getFolderItems, existCheck] = await Promise.all([
+    prisma.Fileshare.findMany({
+      where: {
+        folderId: +params.folderId,
+      },
+    }),
+    prisma.Foldershare.findUnique({
+      where: {
+        id: +params.folderId,
+        userId: +params.userId,
+      },
+    }),
+  ]);
+  console.log(existCheck);
 
-  //     const generateID = uuidv4();
-
-  //     await prisma.Test.create({
-  //       data: {
-  //         name: getFolder.name,
-  //         folderId: +getFolder.id,
-  //         ownerId: +req.user.id,
-  //       },
-  //     });
-
-  //     setTimeout(() => deleteTest(getFolder.id, req.user.id), 6000);
-  //     res.render("sharedFolder", {
-  //       user: req.user,
-  //       folder: getFolder,
-  //       items: getFolder,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
+  if (existCheck == null) {
+    // if incorrect url is given render an error
+    return res.send("Error, wrong url!");
+  }
+  //   return res.send("Found the thing");
+  res.render("sharedfolder", {
+    user: req.user,
+    folder: existCheck,
+    items: getFolderItems,
+  });
 });
