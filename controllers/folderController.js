@@ -66,6 +66,30 @@ exports.getFolderDetails = asyncHandler(async (req, res, next) => {
   res.render("folderdetails", { user: req.user, folder: folder, items: items });
 });
 
+exports.getFolderDelete = asyncHandler(async (req, res, next) => {
+  const prisma = new PrismaClient();
+  const [folder, itemsInFolder] = await Promise.all([
+    prisma.Folder.findUnique({
+      where: {
+        id: +req.params.id,
+      },
+    }),
+    prisma.File.findMany({
+      where: {
+        folderId: +req.params.id,
+      },
+    }),
+  ]);
+
+  console.log(itemsInFolder);
+
+  res.render("folderdelete", {
+    user: req.user,
+    folder: folder,
+    items: itemsInFolder,
+  });
+});
+
 //POST FOLDER DELETE
 exports.postFolderDelete = asyncHandler(async (req, res, next) => {
   const prisma = new PrismaClient();
@@ -82,7 +106,7 @@ exports.postFolderDelete = asyncHandler(async (req, res, next) => {
   });
 
   if (items.length > 0) {
-    return res.render("folderdetails", {
+    return res.render(`/folder/delete/${req.params.id}`, {
       user: req.user,
       items: items,
       error: "Items need to be deleted form folder first!",

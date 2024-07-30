@@ -58,16 +58,30 @@ router.post("/file/:id", isFileOwner, fileController.postDownloadFile);
 // GET delete specific file
 router.get("/file/:id/delete", isFileOwner, fileController.getFileDelete);
 
+// GET delete specific folder
+router.get(
+  "/folder/delete/:id",
+  isFolderOwner,
+  folderController.getFolderDelete
+);
+
+// POST delete specific folder
+router.post(
+  "/folder/delete/:id",
+  isFolderOwner,
+  folderController.postFolderDelete
+);
+
 // POST delete specific file
 router.post("/file/:id/delete", isFileOwner, fileController.postDeleteFile);
 
 // GET specific folder
 router.get("/folder/:id", isFolderOwner, folderController.getFolderDetails);
 
-// POST delete specific folder
-router.post("/folder/:id", isFolderOwner, folderController.postFolderDelete);
+// get Share form
+router.get("/shareform/:id", isFolderOwner, shareController.getShare);
 
-// GET share route
-router.get("/share/:id", shareController.getSharedRoute);
+// GET share route for ID
+// router.get("/share/:id", shareController.getSharedRoute);
 
 module.exports = router;
