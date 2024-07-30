@@ -9,9 +9,10 @@ const upload = multer({ dest: "uploads/" });
 const isFileOwner = require("./authMiddleware").isFileOwner;
 const isFolderOwner = require("./authMiddleware").isFolderOwner;
 const isAuth = require("./authMiddleware").isAuth;
+const checkExpired = require("./expireMiddleware").checkExpired;
 
 /* GET home page. */
-router.get("/", mainController.getIndex);
+router.get("/", checkExpired, mainController.getIndex);
 
 // GET register page
 router.get("/register", mainController.getRegister);
@@ -85,9 +86,9 @@ router.get("/shareform/:id", isFolderOwner, shareController.getShare);
 router.post("/shareform/:id", isFolderOwner, shareController.getGenShareRoute);
 
 // GET share folder route
-router.get("/share/:id", shareController.getShareFolder);
+router.get("/share/:id", checkExpired, shareController.getShareFolder);
 
 // GET share item route
-router.get("/share/item/:id", shareController.getShareItem);
+router.get("/share/item/:id", checkExpired, shareController.getShareItem);
 
 module.exports = router;

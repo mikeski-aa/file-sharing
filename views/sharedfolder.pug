@@ -8,7 +8,9 @@ block content
             each item in items 
                 li 
                     a(href=`/share/item/${folder.uniqueurl}_${item.id}`) #{item.name}
-        p If you'd like to delete the folder, please delete all items belonging to it first!
+        p Add folder expiry date
+        p URL of the shared folder: 
+        a(href=`http://localhost:3000/share/${folder.uniqueurl}`) http://localhost:3000/share/#{folder.uniqueurl}
     if error 
         ul 
             li #{error}

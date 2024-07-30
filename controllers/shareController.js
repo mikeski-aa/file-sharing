@@ -79,7 +79,7 @@ exports.getGenShareRoute = asyncHandler(async (req, res, next) => {
     });
   }
 
-  res.redirect("/");
+  res.redirect(`/share/${newURL}`);
 });
 
 // dispaly share folder
@@ -105,7 +105,10 @@ exports.getShareFolder = asyncHandler(async (req, res, next) => {
 
   if (existCheck == null) {
     // if incorrect url is given render an error
-    return res.send("Error, wrong url!");
+    return res.render("error", {
+      message: "The page you are looking for does not exist",
+      error: { status: 404 },
+    });
   }
   //   return res.send("Found the thing");
   res.render("sharedfolder", {
