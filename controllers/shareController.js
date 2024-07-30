@@ -6,71 +6,89 @@ const { v4: uuidv4 } = require("uuid");
 
 // get share form
 exports.getShare = asyncHandler(async (req, res, next) => {
-  res.render("shareform", { user: req.user });
+  const prisma = new PrismaClient();
+  const folder = await prisma.Folder.findUnique({
+    where: {
+      id: +req.params.id,
+    },
+  });
+  res.render("shareform", { user: req.user, folder: folder });
 });
 
-exports.getSharedRoute = asyncHandler(async (req, res, next) => {
+exports.getGenShareRoute = asyncHandler(async (req, res, next) => {
   // needs to check whether the folder already exists
   const prisma = new PrismaClient();
-  const [getFolder, getFolderItems] = await Promise.all([
-    prisma.Folder.findUnique({
-      where: {
-        id: +req.params.id,
-      },
-    }),
-    prisma.File.findMany({
-      where: {
-        folderId: +req.params.id,
-      },
-    }),
-  ]);
-  const exist = await prisma.Test.findMany({
-    where: {
-      ownerId: +req.user.id,
-      folderId: +getFolder.id,
+  const expireDate = new Date();
+  expireDate.setDate(expireDate.getDate() + +req.body.timeperiod);
+  const idGen = uuidv4();
+  const newURL = idGen + "_" + req.params.id + "_" + req.user.id;
+  console.log(newURL.split("_"));
+  await prisma.Test.create({
+    data: {
+      expired: expireDate,
     },
   });
 
-  console.log(exist.length);
-  if (exist.length > 0) {
-    return res.render("sharedFolder", {
-      user: req.user,
-      folder: getFolder,
-      items: getFolder,
-    });
-  }
+  res.redirect("/");
+  //   const [getFolder, getFolderItems] = await Promise.all([
+  //     prisma.Folder.findUnique({
+  //       where: {
+  //         id: +req.params.id,
+  //       },
+  //     }),
+  //     prisma.File.findMany({
+  //       where: {
+  //         folderId: +req.params.id,
+  //       },
+  //     }),
+  //   ]);
+  //   const exist = await prisma.Test.findMany({
+  //     where: {
+  //       ownerId: +req.user.id,
+  //       folderId: +getFolder.id,
+  //     },
+  //   });
 
-  try {
-    const [getFolder, getFolderItems] = await Promise.all([
-      prisma.Folder.findUnique({
-        where: {
-          id: +req.params.id,
-        },
-      }),
-      prisma.File.findMany({
-        where: {
-          folderId: +req.params.id,
-        },
-      }),
-    ]);
+  //   console.log(exist.length);
+  //   if (exist.length > 0) {
+  //     return res.render("sharedFolder", {
+  //       user: req.user,
+  //       folder: getFolder,
+  //       items: getFolder,
+  //     });
+  //   }
 
-    const generateID = uuidv4();
+  //   try {
+  //     const [getFolder, getFolderItems] = await Promise.all([
+  //       prisma.Folder.findUnique({
+  //         where: {
+  //           id: +req.params.id,
+  //         },
+  //       }),
+  //       prisma.File.findMany({
+  //         where: {
+  //           folderId: +req.params.id,
+  //         },
+  //       }),
+  //     ]);
 
-    await prisma.Test.create({
-      data: {
-        name: getFolder.name,
-        folderId: +getFolder.id,
-        ownerId: +req.user.id,
-      },
-    });
+  //     const generateID = uuidv4();
 
-    setTimeout(() => deleteTest(getFolder.id, req.user.id), 6000);
-    res.render("sharedFolder", {
-      user: req.user,
-      folder: getFolder,
-      items: getFolder,
-    });
-  } catch (error) {
-    next(error);
-  }
+  //     await prisma.Test.create({
+  //       data: {
+  //         name: getFolder.name,
+  //         folderId: +getFolder.id,
+  //         ownerId: +req.user.id,
+  //       },
+  //     });
+
+  //     setTimeout(() => deleteTest(getFolder.id, req.user.id), 6000);
+  //     res.render("sharedFolder", {
+  //       user: req.user,
+  //       folder: getFolder,
+  //       items: getFolder,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
 });

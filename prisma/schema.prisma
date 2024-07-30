@@ -50,8 +50,10 @@ model Folder {
 
 model Test {
 id  Int @id @default(autoincrement())
-shared DateTime @default(now()) @db.Timestamptz(6)
-name String 
-folderId Int
-ownerId Int 
+created DateTime @default(now())
+expired DateTime?
+uniqueurl String?
+name String?
+folderId Int?
+ownerId Int? 
 }

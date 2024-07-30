@@ -4,7 +4,9 @@ block content
     h2 Would you like to share the #{folder.name} along with all of its contents? 
     form(method='POST')
         div.formDiv 
-            select(name='timeperiod')
+            label(for='timeperiod' ) 
+            select(name='timeperiod' required)
                 option(value=1) 1 day 
                 option(value=2) 2 days 
                 option(value=5) 5 days
+        button.submitShare(action='submit') Submit request 

@@ -81,7 +81,7 @@ router.get("/folder/:id", isFolderOwner, folderController.getFolderDetails);
 // get Share form
 router.get("/shareform/:id", isFolderOwner, shareController.getShare);
 
-// GET share route for ID
-// router.get("/share/:id", shareController.getSharedRoute);
+// POST share route for ID
+router.post("/shareform/:id", isFolderOwner, shareController.getGenShareRoute);
 
 module.exports = router;
