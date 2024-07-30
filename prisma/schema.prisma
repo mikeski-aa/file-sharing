@@ -47,3 +47,10 @@ model Folder {
   userId Int
   files File[]
 }
+
+model Test {
+id  Int @id @default(autoincrement())
+shared DateTime @default(now()) @db.Timestamptz(6)
+name String 
+uniqueId String
+}

@@ -5,11 +5,6 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const upload = multer({ dest: "uploads/" });
 const { v4: uuidv4 } = require("uuid");
-const fs = require("fs");
-const { mkdir } = require("fs/promises");
-const { Readable } = require("stream");
-const { finished } = require("stream/promises");
-const path = require("path");
 
 // GET new image
 exports.getNewFile = asyncHandler(async (req, res, next) => {
