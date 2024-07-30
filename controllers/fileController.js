@@ -158,33 +158,6 @@ exports.postDeleteFile = asyncHandler(async (req, res, next) => {
 
 //post file download
 exports.postDownloadFile = asyncHandler(async (req, res, next) => {
-  console.log(req.body.imageid);
-  cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-  });
-  await cloudinary.api
-    .resources_by_ids([req.body.imageid])
-    .then((result) => console.log(result));
-
-  const test = await fetch(
-    "https://res.cloudinary.com/dyev7n9en/image/upload/v1722263961/2aba8a11-e23f-4265-a45e-f46327b4ba6e.png"
-  );
-  const downloadFile = async (url, fileName) => {
-    const res = await fetch(url);
-    if (!fs.existsSync("downloads")) await mkdir("downloads"); //Optional if you already have downloads directory
-    const destination = path.resolve("./downloads", fileName);
-    const fileStream = fs.createWriteStream(destination, { flags: "wx" });
-    await finished(Readable.fromWeb(res.body).pipe(fileStream));
-  };
-
-  await downloadFile(
-    "https://res.cloudinary.com/dyev7n9en/image/upload/v1722263961/2aba8a11-e23f-4265-a45e-f46327b4ba6e.png",
-    "test.png"
-  );
-
-  console.log(test);
-
+  console.log("Download should start");
   res.redirect("/");
 });
