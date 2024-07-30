@@ -29,10 +29,8 @@ exports.getSharedRoute = asyncHandler(async (req, res, next) => {
       },
     });
 
-    console.log(getFolder.name);
-    console.log(getFolderItems);
     setTimeout(() => deleteTest(generateID), 3600000);
-    res.redirect("/");
+    res.render("sharedFolder", { user: req.user, folder: getFolder });
   } catch (error) {
     next(error);
   }
