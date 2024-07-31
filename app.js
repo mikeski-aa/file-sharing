@@ -17,6 +17,13 @@ var usersRouter = require("./routes/users");
 
 var app = express();
 
+// rate limiter for maximum of 20 requests per minute
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, /// 1 minute
+  max: 20,
+});
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -27,6 +34,8 @@ const prismaStore = new PrismaSessionStore(new PrismaClient(), {
   dbRecordIdIsSessionId: true,
   dbRecordIdFunction: undefined,
 });
+
+app.use(limiter);
 
 // set up session cookies
 app.use(
