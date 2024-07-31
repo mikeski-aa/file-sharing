@@ -35,6 +35,7 @@ model File {
   name String @db.Text
   url String @db.Text
   user  User  @relation(fields: [userId], references: [id])
+  upload DateTime
   userId Int 
   folder Folder @relation(fields: [folderId], references: [id])
   folderId Int

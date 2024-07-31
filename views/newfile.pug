@@ -3,7 +3,7 @@ extends layout
 block content 
     div.mainCont 
         h2 Upload a new file
-        if folders
+        if render
             form(method='POST' enctype="multipart/form-data")
                 div.newFileName
                     label(for="name") File name:

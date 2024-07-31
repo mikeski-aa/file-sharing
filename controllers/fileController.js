@@ -12,7 +12,19 @@ exports.getNewFile = asyncHandler(async (req, res, next) => {
   const folders = await prisma.Folder.findMany({
     where: { userId: req.user.id },
   });
-  res.render("newfile", { user: req.user, folders: folders });
+  if (folders.length > 0) {
+    return res.render("newfile", {
+      user: req.user,
+      folders: folders,
+      render: true,
+    });
+  } else {
+    return res.render("newfile", {
+      user: req.user,
+      folders: folders,
+      render: false,
+    });
+  }
 });
 
 // POST new image
@@ -71,6 +83,7 @@ exports.postNewFile = [
           name: req.body.name,
           url: response.url,
           userId: req.user.id,
+          upload: new Date(),
           // converting to int -> int is expected by DB
           folderId: +req.body.folder,
         },
@@ -105,7 +118,13 @@ exports.getFileDetails = asyncHandler(async (req, res, next) => {
     },
   });
 
-  res.render("filedetails", { user: req.user, file: item });
+  const response = await fetch(item.url);
+  console.log(response);
+
+  res.render("filedetails", {
+    user: req.user,
+    file: item,
+  });
 });
 
 // POST file download

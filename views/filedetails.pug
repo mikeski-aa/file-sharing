@@ -3,8 +3,9 @@ extends layout
 block content 
     div.mainCont
         if file 
-            h4 #{file.name}
-            h5 #{file.imageId}
+            h5 Name: #{file.name}
+            h5 Date of upload: #{file.upload}
+            h5 File ID: #{file.imageId}     
             img(src=file.url)
             
             form(method="POST")
@@ -13,7 +14,6 @@ block content
             br
             a(href=`/file/${file.id}/delete`) Delete item
 
-            a(href=file.url download='lol') asdasd
 
         else 
             h2 file content missing

@@ -4,7 +4,8 @@ block content
     div.mainCont
         if existmsg 
             h2 The folder share link has already been created! 
-            h3 You can share your folder using the following link: /share/#{sharelink}
+            h3 You can share your folder using the following link: 
+            a(href=`https://img-store-project.adaptable.app/${sharelink}`) https://img-store-project.adaptable.app/#{sharelink}
         else
             h2 Would you like to share the #{folder.name} along with all of its contents? 
             form(method='POST')
