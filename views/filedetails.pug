@@ -1,19 +1,20 @@
 extends layout 
 
 block content 
-    if file 
-        h4 #{file.name}
-        h5 #{file.imageId}
-        img(src=file.url)
-        
-        form(method="POST")
-            input(type="hidden" name="imageurl" value=file.url)
-            button.itemDelete(onclick="submit") Download file
-        br
-        a(href=`/file/${file.id}/delete`) Delete item
+    div.mainCont
+        if file 
+            h4 #{file.name}
+            h5 #{file.imageId}
+            img(src=file.url)
+            
+            form(method="POST")
+                input(type="hidden" name="imageurl" value=file.url)
+                button.itemDelete(onclick="submit") Download file
+            br
+            a(href=`/file/${file.id}/delete`) Delete item
 
-        a(href=file.url download='lol') asdasd
+            a(href=file.url download='lol') asdasd
 
-    else 
-        h2 file content missing
+        else 
+            h2 file content missing
 

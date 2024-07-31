@@ -21,6 +21,7 @@ exports.getIndex = asyncHandler(async (req, res, next) => {
         },
       }),
     ]);
+    console.log(req.user);
 
     return res.render("index", {
       user: req.user,

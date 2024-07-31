@@ -1,12 +1,19 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to your drive! 
-  p You currently have #{filenumber} of files in storage, within #{foldernumber} folder
-  if folders 
-    ul
-      each folder in folders 
-        li 
-          a(href=`/folder/${folder.id}`) #{folder.name}
+  div.mainCont
+    h1= title
+     
+    
+    if folders 
+      p Welcome to your image store, #[strong #{user.username}]!
+      p You currently have #{filenumber} of files in storage, within #{foldernumber} folders
+      p Your active folders: 
+        ul
+          each folder in folders 
+            li 
+              a(href=`/folder/${folder.id}`) #{folder.name}
+    else 
+      p Welcome to the image storage! 
+      p Please log in or register to view your folders
 

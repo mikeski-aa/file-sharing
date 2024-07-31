@@ -1,16 +1,16 @@
 extends layout 
 
 block content 
-
-    h4 #{folder.name}
-    if items 
-        ul 
-            each item in items 
-                li 
-                    a(href=`/share/item/${folder.uniqueurl}_${item.id}`) #{item.name}
-        p Add folder expiry date
-        p URL of the shared folder: 
-        a(href=`http://localhost:3000/share/${folder.uniqueurl}`) http://localhost:3000/share/#{folder.uniqueurl}
-    if error 
-        ul 
-            li #{error}
+    div.mainCont
+        h4 #{folder.name}
+        if items 
+            ul 
+                each item in items 
+                    li 
+                        a(href=`/share/item/${folder.uniqueurl}_${item.id}`) #{item.name}
+            p This shared link will expire on #{expdate}
+            p URL of the shared folder: 
+            a(href=`https://img-store-project.adaptable.app/${folder.uniqueurl}`) https://img-store-project.adaptable.app/#{folder.uniqueurl}
+        if error 
+            ul 
+                li #{error}

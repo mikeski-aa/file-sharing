@@ -1,22 +1,23 @@
 extends layout 
 
 block content 
-    if folder 
-        h4 #{folder.name}
-        if items.length > 0
-            ul 
-                each item in items 
-                    li 
-                        a(href=`/file/${item.id}`) #{item.name}
-            p If you'd like to delete the folder, please delete all items belonging to it first!
-        else 
-            p Are you sure you want to delete this Folder?
-            form(method="POST")
-                input(type="hidden" name="folderid" value=folder.id)
-                button.itemDelete(onclick="submit") Delete file
+    div.mainCont
+        if folder 
+            h4 #{folder.name}
+            if items.length > 0
+                ul 
+                    each item in items 
+                        li 
+                            a(href=`/file/${item.id}`) #{item.name}
+                p If you'd like to delete the folder, please delete all items belonging to it first!
+            else 
+                p Are you sure you want to delete this Folder?
+                form(method="POST")
+                    input(type="hidden" name="folderid" value=folder.id)
+                    button.itemDelete(onclick="submit") Delete file
 
-    else 
-        h2 file content missing
-    if error 
-        ul 
-            li #{error}
+        else 
+            h2 file content missing
+        if error 
+            ul 
+                li #{error}

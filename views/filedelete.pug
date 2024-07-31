@@ -1,13 +1,14 @@
 extends layout 
 
 block content 
-    if file 
-        h4 #{file.name}
-        h5 #{file.imageId}
-        p Are you sure you want to delete this item?
-        form(method="POST")
-            input(type="hidden" name="imageid" value=file.imageId)
-            button.itemDelete(onclick="submit") Delete file
+    div.mainCont
+        if file 
+            h4 #{file.name}
+            h5 #{file.imageId}
+            p Are you sure you want to delete this item?
+            form(method="POST")
+                input(type="hidden" name="imageid" value=file.imageId)
+                button.itemDelete(onclick="submit") Delete file
 
-    else 
-        h2 file content missing
+        else 
+            h2 file content missing

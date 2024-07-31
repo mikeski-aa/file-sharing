@@ -1,20 +1,20 @@
 extends layout 
 
 block content 
+    div.mainCont
+        h4 #{folder.name}
+        if items 
+            ul 
+                each item in items 
+                    li 
+                        a(href=`/file/${item.id}`) #{item.name}
+        a(href=`/shareform/${folder.id}`) Generate share link 
+        br
+        a(href=`/folder/delete/${folder.id}`) Delete folder
 
-    h4 #{folder.name}
-    if items 
-        ul 
-            each item in items 
-                li 
-                    a(href=`/file/${item.id}`) #{item.name}
-    a(href=`/shareform/${folder.id}`) Generate share link 
-    br
-    a(href=`/folder/delete/${folder.id}`) Delete folder
-
-    if error 
-        ul 
-            li #{error}
+        if error 
+            ul 
+                li #{error}
 
 
         //- form(method="POST")

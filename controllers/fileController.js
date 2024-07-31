@@ -5,9 +5,6 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const upload = multer({ dest: "uploads/" });
 const { v4: uuidv4 } = require("uuid");
-const fileDownload = require("js-file-download");
-const fileSaver = require("file-saver").saveAs;
-const axios = require("axios");
 
 // GET new image
 exports.getNewFile = asyncHandler(async (req, res, next) => {
@@ -28,6 +25,7 @@ exports.postNewFile = [
   body("folder").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
+    console.log(req.body.folder);
     const errors = validationResult(req);
     const prisma = new PrismaClient();
     // Cloudinary configuration

@@ -3,24 +3,26 @@ extends layout
 block content 
     div.mainCont 
         h2 Upload a new file
-        form(method='POST' enctype="multipart/form-data")
-            div.newFileName
-                label(for="name") File name:
-                input(type="text" name="name" placeholder="My file" required value=(name === undefined?'':name))
-            if folders
+        if folders
+            form(method='POST' enctype="multipart/form-data")
+                div.newFileName
+                    label(for="name") File name:
+                    input(type="text" name="name" placeholder="My file" required value=(name === undefined?'':name))
                 div.fileFolder 
                     label(for='folder') Select folder you want to upload this file to: 
-                    select(name="folder")
+                    select(name="folder" required)
                         option(value="") --Please select a folder--
                         for folder in folders
                             option(value=folder.id) #{folder.name}
 
 
 
-            div.newFileItem
-                label(for="image") Add file:
-                input(type="file" name="image" required value=(file === undefined?'':file))
-            button.btnNewFolderAdd(action='submit') Upload new file
+                div.newFileItem
+                    label(for="image") Add file:
+                    input(type="file" name="image" required value=(file === undefined?'':file))
+                button.btnNewFolderAdd(action='submit') Upload new file
+        else 
+            p You must create a folder before uploading a file! 
         
         if errors 
             ul  

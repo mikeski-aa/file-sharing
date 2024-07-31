@@ -115,6 +115,7 @@ exports.getShareFolder = asyncHandler(async (req, res, next) => {
     user: req.user,
     folder: existCheck,
     items: getFolderItems,
+    expdate: existCheck.expired,
   });
 });
 

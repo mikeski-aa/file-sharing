@@ -1,6 +1,8 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -9,4 +11,8 @@ a {
 
 .navBar {
   display: flex;
+}
+
+.mainCont {
+  padding-left: 15px;
 }

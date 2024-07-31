@@ -1,16 +1,17 @@
 extends layout 
 
 block content 
-    if existmsg 
-        h2 The folder share link has already been created! 
-        h3 You can share your folder using the following link: /share/#{sharelink}
-    else
-        h2 Would you like to share the #{folder.name} along with all of its contents? 
-        form(method='POST')
-            div.formDiv 
-                label(for='timeperiod' ) 
-                select(name='timeperiod' required)
-                    option(value=1) 1 day 
-                    option(value=2) 2 days 
-                    option(value=5) 5 days
-            button.submitShare(action='submit') Submit request 
+    div.mainCont
+        if existmsg 
+            h2 The folder share link has already been created! 
+            h3 You can share your folder using the following link: /share/#{sharelink}
+        else
+            h2 Would you like to share the #{folder.name} along with all of its contents? 
+            form(method='POST')
+                div.formDiv 
+                    label(for='timeperiod' ) 
+                    select(name='timeperiod' required)
+                        option(value=1) 1 day 
+                        option(value=2) 2 days 
+                        option(value=5) 5 days
+                button.submitShare(action='submit') Submit request 
