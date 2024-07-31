@@ -5,6 +5,9 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const upload = multer({ dest: "uploads/" });
 const { v4: uuidv4 } = require("uuid");
+const fileDownload = require("js-file-download");
+const fileSaver = require("file-saver").saveAs;
+const axios = require("axios");
 
 // GET new image
 exports.getNewFile = asyncHandler(async (req, res, next) => {
@@ -25,8 +28,6 @@ exports.postNewFile = [
   body("folder").trim().escape(),
 
   asyncHandler(async (req, res, next) => {
-    console.log("logging req.file");
-    console.log(req.file);
     const errors = validationResult(req);
     const prisma = new PrismaClient();
     // Cloudinary configuration
@@ -64,9 +65,6 @@ exports.postNewFile = [
         .catch((error) => {
           console.log(error);
         });
-
-      console.log(response);
-      console.log(fileId);
 
       // after file uploaded, we can save to our DB
       await prisma.File.create({
@@ -112,6 +110,11 @@ exports.getFileDetails = asyncHandler(async (req, res, next) => {
   res.render("filedetails", { user: req.user, file: item });
 });
 
+// POST file download
+exports.postFileDetailDownload = asyncHandler(async (req, res, next) => {
+  res.redirect(req.body.imageurl);
+});
+
 // GET file delete
 exports.getFileDelete = asyncHandler(async (req, res, next) => {
   const prisma = new PrismaClient();
@@ -149,10 +152,4 @@ exports.postDeleteFile = asyncHandler(async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
-
-//post file download
-exports.postDownloadFile = asyncHandler(async (req, res, next) => {
-  console.log("Download should start");
-  res.redirect("/");
 });

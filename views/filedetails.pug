@@ -7,10 +7,12 @@ block content
         img(src=file.url)
         
         form(method="POST")
-            input(type="hidden" name="imageid" value=file.imageId)
+            input(type="hidden" name="imageurl" value=file.url)
             button.itemDelete(onclick="submit") Download file
         br
         a(href=`/file/${file.id}/delete`) Delete item
+
+        a(href=file.url download='lol') asdasd
 
     else 
         h2 file content missing
